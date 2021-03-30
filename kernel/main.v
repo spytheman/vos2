@@ -45,13 +45,14 @@ fn stivale2_get_tag(stivale2_struct &Stivale2Struct, id u64) &Stivale2Tag {
     return 0
 }
 
+[direct_array_access]
 pub fn kmain(stivale2_struct &Stivale2Struct) {
-    fb_tag := &Stivale2FBTag(stivale2_get_tag(stivale2_struct, 0x506461d2950408fa))
+    fb_tag := unsafe { &Stivale2FBTag(stivale2_get_tag(stivale2_struct, 0x506461d2950408fa)) }
 
     mut framebuffer := &u32(fb_tag.addr)
 
     for i := 0; i < 500; i++ {
-        framebuffer[i + (fb_tag.pitch / 4) * i] = 0xffffff
+        unsafe { framebuffer[i + (fb_tag.pitch / 4) * i] = 0xffffff }
     }
     for { }
 }
